@@ -83,15 +83,6 @@ J = sum(JVec(:))/m;
 
 %% Regularized Cost Function
 reg = lambda / (2*m) * ( sumsq(Theta1(:,2:end)(:)) + sumsq(Theta2(:,2:end)(:)));
-
-sum = 0;
-for i = 1: size(Theta1,1)
-	for j = 2: size(Theta1,2)
-		sum = sum + Theta1(i,j)^2;
-	end;
-end;
-
-disp(sum); disp(sumsq(Theta1(:,2:end)(:)));
 J = J + reg;
 
 % -------------------------------------------------------------
