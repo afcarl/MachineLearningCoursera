@@ -64,39 +64,35 @@ Theta2_grad = zeros(size(Theta2));
 
 num_range = 1:num_labels;
 Y = zeros(m, num_labels);
+
 %% Forward Propagation
 H = zeros(m, num_labels);
 for i = 1:m
 	Y(i,:) = (y(i) == num_range);
 	%% Calculate "a" and "h"
 	a1 = [1 X(i,:)];
-	z2 = Theta1*a1', a2 = [1; sigmoid(z2)];
-	z3 = Theta2*a2, a3 = sigmoid(z3);
+	z2 = Theta1*a1'; a2 = [1; sigmoid(z2)];
+	z3 = Theta2*a2; a3 = sigmoid(z3);
 	H(i,:) = a3';
 end;
 
 JVec = - ( (Y .* log(H)) + (1-Y) .* log(1-H) );
+
+%% Unregularized Cost Function
 J = sum(JVec(:))/m;
 
+%% Regularized Cost Function
+reg = lambda / (2*m) * ( sumsq(Theta1(:,2:end)(:)) + sumsq(Theta2(:,2:end)(:)));
 
+sum = 0;
+for i = 1: size(Theta1,1)
+	for j = 2: size(Theta1,2)
+		sum = sum + Theta1(i,j)^2;
+	end;
+end;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+disp(sum); disp(sumsq(Theta1(:,2:end)(:)));
+J = J + reg;
 
 % -------------------------------------------------------------
 
