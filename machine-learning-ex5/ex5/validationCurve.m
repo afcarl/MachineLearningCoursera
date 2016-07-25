@@ -39,14 +39,17 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
+for i = 1:length(lambda_vec)
+	%% Retrieve lambda
+	lambda = lambda_vec(i);
 
-
-
-
-
-
-
-
+	%% Train model with current lambda
+	theta = trainLinearReg(X,y,lambda);
+	
+	%% Calculate errors with current model
+	[error_train(i), grad_train] = linearRegCostFunction(X,y,theta,0);
+	[error_val(i), grad_val] = linearRegCostFunction(Xval,yval,theta,0);
+end;
 
 % =========================================================================
 
