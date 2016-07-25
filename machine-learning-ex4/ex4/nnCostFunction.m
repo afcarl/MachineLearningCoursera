@@ -62,30 +62,51 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%% Variable initialization
 num_range = 1:num_labels;
 Y = zeros(m, num_labels);
-
-%% Forward Propagation
 H = zeros(m, num_labels);
+delta_2 = zeros(size(Theta2_grad));
+delta_1 = zeros(size(Theta1_grad));
+
 for i = 1:m
+
+	%% Logical arrays
 	Y(i,:) = (y(i) == num_range);
-	%% Calculate "a" and "h"
-	a1 = [1 X(i,:)];
-	z2 = Theta1*a1'; a2 = [1; sigmoid(z2)];
+
+	%% Forward Propagation
+	a1 = [1 X(i,:)]';
+	z2 = Theta1*a1; a2 = [1; sigmoid(z2)];
 	z3 = Theta2*a2; a3 = sigmoid(z3);
 	H(i,:) = a3';
+
+	%% Backward Propagation: Processing
+	d3 = a3-Y(i,:)';
+	d2 = Theta2'*d3 .* sigmoidGradient([1;z2]);
+	d2 = d2(2:end);
+	delta_2 = delta_2 + d3*a2';
+	delta_1 = delta_1 + d2*a1';
+
 end;
 
-JVec = - ( (Y .* log(H)) + (1-Y) .* log(1-H) );
-
 %% Unregularized Cost Function
+JVec = - ( (Y .* log(H)) + (1-Y) .* log(1-H) );
 J = sum(JVec(:))/m;
 
 %% Regularized Cost Function
 reg = lambda / (2*m) * ( sumsq(Theta1(:,2:end)(:)) + sumsq(Theta2(:,2:end)(:)));
 J = J + reg;
 
+%% Backward Propagation: Theta Gradients (Unregularized)
+Theta1_grad = delta_1/m;
+Theta2_grad = delta_2/m;
+
+%% Backward Propagation: Regularized Theta Gradients
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + lambda/m * Theta1(:,2:end);
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + lambda/m * Theta2(:,2:end);
+
 % -------------------------------------------------------------
+
 
 % =========================================================================
 
