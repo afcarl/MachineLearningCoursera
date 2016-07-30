@@ -23,12 +23,32 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
-
-
-
-
-
-
+values = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+%values_size = columns(values);
+%min_error = intmax; 
+%coords = [0,0];
+%for i = 1:values_size
+%	C_i = values(i);
+%	for j = 1:values_size
+%		sigma_i = values(j);
+%		model= svmTrain(X, y, C_i, @(x1, x2) gaussianKernel(x1, x2, sigma_i));
+%		predictions = svmPredict(model, Xval);
+%		curr_error = mean(double(predictions ~= yval));
+%		disp(curr_error);
+%		if (curr_error < min_error )
+%			disp('Min error'); disp(curr_error);
+%			min_error = curr_error;
+%			coords = [i,j];
+%		end
+%	end
+%end
+%disp("****");
+%disp(coords);
+%disp("****");
 % =========================================================================
 
+C = values(5);
+sigma = values(3);
+
 end
+
